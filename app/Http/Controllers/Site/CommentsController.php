@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Site;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Product;
-use App\Models\Category;
+use App\Http\Controllers\Controller;
+use App\Models\{Product, Comment};
 
-class ProductsController extends Controller
+class CommentsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,16 +15,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Product::with('category')->paginate(4);
-        
-        return view('site.products.index', compact('products'));
-    }
-
-     public function search(Request $request){
-
-        $searchText = $request->get('searchText');
-        $products = Product::where('title',"Like",$searchText."%")->paginate(3);
-        return view("site.products.index", compact('products'));
+        //
     }
 
     /**
@@ -44,9 +34,23 @@ class ProductsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Comment $comment)
     {
-        //
+        request()->validate([
+           'author'    =>  'required|min:3',
+            'comments'     =>  'required|min:10',
+            'product_id' => 'required'
+            
+        ]);
+
+        $Comment = Comment::create([
+            'author'       =>  request('author'),
+            'comments'     => request('comments'),
+            'product_id'  => request('product_id')
+        
+        ]);
+
+        return back();
     }
 
     /**
@@ -55,22 +59,12 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Product $product)
     {
-        //
-    }
+        
+        $comments = Comment::all();
 
-     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function details($id)
-    {
-       
-        $product = Product::findOrFail($id);
-       return view('site.products.details', compact('product'));
+         return view('site.products.details', compact('product', 'comments'));
     }
 
     /**

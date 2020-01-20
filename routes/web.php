@@ -21,11 +21,17 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('checkout/payment/complete', 'Site\CheckoutController@complete')->name('checkout.payment.complete');
 
     Route::get('account/orders', 'Site\AccountController@getOrders')->name('account.orders');
+
+    Route::post('/products/comments', 'Site\CommentsController@store')->name('products.comments.store');
+
+    Route::get('/products/comments/{product}', 'Site\CommentsController@show');
 });
 
 Route::get('/',  'Site\ProductsController@index')->name('site.products.index');
 
 Route::get('/details/products/{product}',  'Site\ProductsController@details')->name('site.products.details');
+
+Route::get('/search', 'Site\ProductsController@search')->name('searchProducts');
 
 Route::post('/cart-add', 'Site\CartController@add')->name('cart.add');
 Route::get('/cart-checkout', 'Site\CartController@cart')->name('site.products.cart');
