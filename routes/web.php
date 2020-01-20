@@ -11,19 +11,21 @@
 |
 */
 
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/checkout', 'Site\CheckoutController@getCheckout')->name('checkout');
+    Route::post('/checkout/order', 'Site\CheckoutController@placeOrder')->name('checkout.place.order');
+
+    Route::get('/paypalcheckout', 'Site\CheckoutController@paypalcheckout')->name('paypalcheckout');
+    Route::post('/paypalcheckout/order', 'Site\CheckoutController@placeOrderPaypal')->name('checkout.place.order.paypal');
+
+    Route::get('checkout/payment/complete', 'Site\CheckoutController@complete')->name('checkout.payment.complete');
+
+    Route::get('account/orders', 'Site\AccountController@getOrders')->name('account.orders');
+});
+
 Route::get('/',  'Site\ProductsController@index')->name('site.products.index');
 
 Route::get('/details/products/{product}',  'Site\ProductsController@details')->name('site.products.details');
-
-Route::get('/stripecheckout', 'Site\CheckoutController@stripeCheckout')->name('site.products.stripe');
-Route::post('/stripecheckout/order', 'Site\CheckoutController@placeOrderStripe')->name('checkout.place.order.stripe');
-
-Route::get('/checkout/products',  'Site\CheckoutController@getCheckout')->name('site.products.checkout');
-Route::post('/checkout/products/create',  'Site\CheckoutController@storeCheckout')->name('site.products.store');
-
-Route::get('checkout/payment/complete', 'Site\CheckoutController@complete')->name('checkout.payment.complete');
-
-Route::get('account/orders', 'Site\AccountController@getOrders')->name('account.orders');
 
 Route::post('/cart-add', 'Site\CartController@add')->name('cart.add');
 Route::get('/cart-checkout', 'Site\CartController@cart')->name('site.products.cart');

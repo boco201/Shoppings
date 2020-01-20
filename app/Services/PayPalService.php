@@ -90,7 +90,7 @@ class PayPalService
         // Setting up redirection urls
         $redirectUrls = new RedirectUrls();
         $redirectUrls->setReturnUrl(route('checkout.payment.complete'))
-                     ->setCancelUrl(route('site.products.checkout'));
+                     ->setCancelUrl(route('paypalcheckout'));
 
         // Creating payment instance
         $payment = new Payment();

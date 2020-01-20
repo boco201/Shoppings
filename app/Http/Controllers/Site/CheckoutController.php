@@ -3,81 +3,48 @@
 namespace App\Http\Controllers\Site;
 
 use Cart;
-use App\Models\Order;
-use App\Models\Product;
-use App\Models\OrderItem;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Contracts\OrderContract;
-use App\Services\PayPalService;
 use Stripe\Stripe;
 use Stripe\Customer;
 use Stripe\Charge;
+use App\Models\Order;
+use Illuminate\Http\Request;
+use App\Services\PayPalService;
+use App\Contracts\OrderContract;
+use App\Http\Controllers\Controller;
+
 
 class CheckoutController extends Controller
 {
-
-      protected $payPal;
+    protected $payPal;
 
     protected $orderRepository;
 
-   public function __construct(OrderContract $orderRepository, PayPalService $payPal)
-{
-    $this->payPal = $payPal;
-    $this->orderRepository = $orderRepository;
-}
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function __construct(OrderContract $orderRepository, PayPalService $payPal)
     {
-        
-  
+        $this->payPal = $payPal;
+        $this->orderRepository = $orderRepository;
     }
 
-
-    public function getCheckout()
+      public function paypalcheckout()
     {
-        return view('site.products.checkout');
+        return view('site.products.paypalcheckout');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+     public function placeOrderPaypal(Request $request)
     {
-        //
-    }
+        // Before storing the order we should implement the
+        // request validation which I leave it to you
+       
 
-      /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function storeCheckout(Request $request)
-    {
- 
         $order = $this->orderRepository->storeOrderDetails($request->all());
-        
-        
-          if ($order) {
-            $this->payPal->processPayment($order); 
-      
-       }
 
-        if ($order) {
-        $this->payPal->processPayment($order);
-    }
+        // You can add more control here to handle if the order is not stored properly
+       if ($order) {
+            $this->payPal->processPayment($order);
+        }
 
-    return redirect()->back()->with('message','Order not placed');
-
+    
+       return redirect()->route('site.products.index')->with('message','votre payement est accepté merci pour votre achat, un mail est envoyé');
     }
 
      public function complete(Request $request)
@@ -98,20 +65,19 @@ class CheckoutController extends Controller
     }
 
 
-      public function stripeCheckout()
+    public function getCheckout()
     {
-        return view('site.products.stripe');
+        return view('site.products.checkout');
     }
 
-    public function placeOrderStripe(Request $request) 
+    public function placeOrder(Request $request) 
     {
-
         // Before storing the order we should implement the
         // request validation which I leave it to you
 
         $order = $this->orderRepository->storeOrderDetails($request->all());
 
-    /* try {
+      /* try {
           $charge = Stripe::charges()->create([
              'amount' => Cart::getSubTotal() * 100,
              'currency' => 'eur',
@@ -132,10 +98,10 @@ class CheckoutController extends Controller
         } catch (\Exception $ex) {
     return $ex->getMessage();
 
-    }
+    }*/
 
       //dd(request()->all());
-             */ try {
+              try {
          Stripe::setApiKey(env('STRIPE_SECRET'));
 
           $customer = Customer::create(array(
@@ -156,8 +122,8 @@ class CheckoutController extends Controller
   } catch (\Exception $ex) {
     return $ex->getMessage();
 
-
 }
+
 
         // You can add more control here to handle if the order is not stored properly
        /* if ($order) {
@@ -167,60 +133,13 @@ class CheckoutController extends Controller
        // return redirect()->back()->with('message','Order not placed';
 }
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+public function ship(Request $request, $orderId)
     {
-        //
+        $order = Order::findOrFail($orderId);
+
+        $order = $this->orderRepository->storeOrderDetails($request->all());
+
+        Mail::to($request->user())->send(new OrderShipped($order));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

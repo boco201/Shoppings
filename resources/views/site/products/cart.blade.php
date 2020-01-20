@@ -102,7 +102,7 @@
                             <br> Lorem ipsum dolor
                         </div>
                     </figure>
-                     <a href="{{ route('site.products.stripe') }}" class="btn btn-success btn-lg btn-block">Payement carte bancaire </a>  <a href="{{ route('site.products.checkout') }}" class="btn btn-primary btn-lg btn-block">Payment paypalchekout</a>
+                     <a href="{{ route('checkout') }}" class="btn btn-success btn-lg btn-block">Payement carte bancaire </a>  <a href="{{ route('paypalcheckout') }}" class="btn btn-primary btn-lg btn-block">Payment paypalchekout</a>
                 </aside>
             </div>
         </div>
