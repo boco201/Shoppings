@@ -102,7 +102,7 @@ class CheckoutController extends Controller
 
       //dd(request()->all());
               try {
-         Stripe::setApiKey(env('sk_test_EFIIcrnLYd0ncJjw02otZOkv'));
+         Stripe::setApiKey(env('STRIPE_SECRET'));
 
           $customer = Customer::create(array(
         'email' => $request->stripeEmail,
