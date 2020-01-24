@@ -18,4 +18,9 @@ class Product extends Model
     {
     	return $this->hasMany(Comment::class);
     }
+
+    public function path()
+    {
+        return url("/details/products/{$this->id}-".Str::slug($this->title));
+    }
 }

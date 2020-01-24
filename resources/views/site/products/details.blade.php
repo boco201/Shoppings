@@ -37,7 +37,7 @@ boco | Admin Panel
                                     <dl>
                                         <dt>Description</dt>
                                         <dd>
-                                            <p>{{$product->description}} </p>
+                                            <p>{{Str::limit($product->description, 100) }} </p>
                                         </dd>
                                     </dl>
                                     <dl class="row">

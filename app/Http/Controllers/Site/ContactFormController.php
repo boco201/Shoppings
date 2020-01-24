@@ -1,14 +1,13 @@
 <?php
-
 namespace App\Http\Controllers\Site;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Models\Product;
-use App\Models\Category;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ContactFormMail;
+use App\Http\Controllers\Controller;
 
-class ProductsController extends Controller
+
+class ContactFormController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,19 +16,22 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Product::with('category')->orderBy('id', 'DESC')->paginate(4);
-        
-        return view('site.products.index', compact('products'));
+        //
     }
 
-    
-    public function search(Request $request){
+   /* public function cgv()
+    {
+        return view('frontend.web.contact.cgv');
 
-        $searchText = $request->get('searchText');
-        $products = Product::where('title',"Like",$searchText."%")->paginate(3);
-   
-        return view('site.products.index', compact('products'));
     }
+
+     public function cgu()
+    {
+        return view('frontend.web.contact.cgu');
+
+    }
+    */
+
 
     /**
      * Show the form for creating a new resource.
@@ -38,7 +40,7 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        //
+        return view('site.products.contact.create');
     }
 
     /**
@@ -49,8 +51,17 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       $data = request()->validate([
+        'name' =>  'required',
+        'email' => 'required|email',
+        'message' => 'required|min:5'
+        ]);
+
+             Mail::to('saidd6988@gmail.com')->send(new ContactFormMail($data));
+       return redirect()->back()->with('message', 'votre mail a été bien reçu.');
+
     }
+   
 
     /**
      * Display the specified resource.
@@ -61,19 +72,6 @@ class ProductsController extends Controller
     public function show($id)
     {
         //
-    }
-
-     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function details($id, $slug)
-    {
-       
-        $product = Product::findOrFail($id);
-       return view('site.products.details', compact('product'));
     }
 
     /**

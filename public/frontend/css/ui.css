@@ -2280,3 +2280,30 @@ ul.row, ul.row-sm {
   color: #fa755a;
 }
 
+.section-header{
+  height: 200px;
+  background-color:#273a43;
+}
+
+.fa-search{
+  height: 30px;
+}
+
+.remise{
+  color: red;
+}
+
+.text-wrap{
+  color: #fff;
+}
+
+.nav-link{
+    color: #fff;
+}
+
+.section-footer{
+  background-color:#273a43;
+}
+
+
+

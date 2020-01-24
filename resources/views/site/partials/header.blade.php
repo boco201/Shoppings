@@ -1,6 +1,6 @@
 <header class="section-header">
     <section class="header-main">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row align-items-center">
                 <div class="col-lg-3">
                     <div class="brand-wrap">
@@ -9,6 +9,7 @@
                         </a>
                     </div>
                 </div>
+                <div class="col-lg-6"><p style="color: #fff;">Bénéficier de la remise jusqu'à <span class="remise"> -70%</span> pour les achats depassant 100 €</p></div>
                 <div class="col-lg-3 col-sm-6">
                     <div class="widgets-wrap d-flex justify-content-end">
                         <div class="widget-header">
@@ -34,6 +35,7 @@
                                 </a>
                             </div>
                         @else
+                       
                             <ul class="navbar-nav ml-auto">
                                 <li class="nav-item dropdown">
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -58,9 +60,9 @@
                 <div class="col-lg-10 col-sm-10" style="padding-top: 20px; margin-left: 130px;">
                     <form action="{{ route('searchProducts')}}" class="search-wrap">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Que recherchez-vous ? " name="searchText">
+                            <input type="text" class="form-control" name="searchText" placeholder="Que recherchez-vous ? " />
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit" name="searchText">
+                                <button class="btn btn-primary" type="submit">
                                     <i class="fa fa-search"></i>
                                 </button>
                             </div>
@@ -72,3 +74,5 @@
     </section>
     @include('site.partials.nav')
 </header>
+
+

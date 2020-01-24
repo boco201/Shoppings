@@ -7,7 +7,7 @@
         </div>
     </section>
     <section class="section-content bg padding-y border-top">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
             </div>
             <div class="row">
@@ -18,8 +18,15 @@
                                 <th scope="col">Order No.</th>
                                 <th scope="col">First Name</th>
                                 <th scope="col">Last Name</th>
+                                <th scope="col">Adresse</th>
+                                <th scope="col">Ville</th>
+                                <th scope="col">Pays</th>
+                                <th scope="col">Code  Postal</th>
                                 <th scope="col">Order Amount</th>
                                 <th scope="col">Qty.</th>
+                                <th scope="col">User</th>
+                                <th scope="col">Tél</th>
+                                <th scope="col">Date</th>
                                 <th scope="col">Status</th>
                             </tr>
                         </thead>
@@ -29,9 +36,17 @@
                                     <th scope="row">{{ $order->order_number }}</th>
                                     <td>{{ $order->first_name }}</td>
                                     <td>{{ $order->last_name }}</td>
+                                    <td>{{ $order->address }}</td>
+                                    <td>{{ $order->city }}</td>
+                                    <td>{{ $order->country }}</td>
+                                    <td>{{ $order->post_code }}</td>
                                     <td>{{ config('settings.currency_symbol') }}{{ round($order->grand_total, 2) }}</td>
                                     <td>{{ $order->item_count }}</td>
+                                    <td>{{ $order->user_id }}</td>
+                                    <td>{{ $order->phone_number }}</td>
+                                    <td>{{ $order->created_at }}</td>
                                     <td><span class="badge badge-success">{{ strtoupper($order->status) }}</span></td>
+                                    
                                 </tr>
                             @empty
                                 <div class="col-sm-12">

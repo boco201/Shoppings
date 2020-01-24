@@ -29,7 +29,10 @@ Route::group(['middleware' => ['auth']], function () {
 
 Route::get('/',  'Site\ProductsController@index')->name('site.products.index');
 
-Route::get('/details/products/{product}',  'Site\ProductsController@details')->name('site.products.details');
+Route::get('/details/products/{product}-{slug}',  'Site\ProductsController@details')->name('site.products.details');
+
+Route::get('/contact', 'Site\ContactFormController@create')->name('contact.create');
+Route::post('/contact', 'Site\ContactFormController@store');
 
 Route::get('/search', 'Site\ProductsController@search')->name('searchProducts');
 

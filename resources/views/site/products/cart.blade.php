@@ -1,11 +1,7 @@
  @extends('layouts.app')
 @section('title', 'Shopping product')
 @section('content')
- <section class="section-pagetop bg-dark">
-        <div class="container clearfix">
-            <h2 class="title-page">Cart</h2>
-        </div>
-    </section>
+
     <section class="section-content bg padding-y border-top">
         <div class="container">
             <div class="row">
